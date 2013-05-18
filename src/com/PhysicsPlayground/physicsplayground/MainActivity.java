@@ -19,6 +19,11 @@ public class MainActivity extends Activity implements SensorEventListener{
     private boolean color = false;
     private View view;
     private long lastUpdate;
+    private double PrevAcceleration;
+    private long PrevTime = System.currentTimeMillis();
+    private long ActualTime;
+    private long PrevActualTime;
+    private long CurrentVelocity;
     
     
     @Override
@@ -29,7 +34,7 @@ public class MainActivity extends Activity implements SensorEventListener{
 
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
-      view = findViewById(R.id.textView);
+      view = findViewById(R.id.IntroText);
       view.setBackgroundColor(Color.GREEN);
 
       sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -58,16 +63,25 @@ public class MainActivity extends Activity implements SensorEventListener{
         float x = values[0];
         float y = values[1];
         float z = values[2];
-        TextView tx = (TextView) findViewById(R.id.textViewx);
-        TextView ty = (TextView) findViewById(R.id.textViewy);
-        TextView tz = (TextView) findViewById(R.id.textViewz);
-        tx.setText("My x value is :" + x);
-        ty.setText("My y value is :" + y);
-        tz.setText("My z value is :" + z);
-        float accelationSquareRoot = (x * x + y * y + z * z)
-            / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-        long actualTime = System.currentTimeMillis();
-        if (accelationSquareRoot >= 2) //
+        TextView AccelerationX = (TextView) findViewById(R.id.AccelerationX);
+        TextView AccelerationY = (TextView) findViewById(R.id.AccelerationY);
+        TextView AccelerationZ = (TextView) findViewById(R.id.AccelerationZ);
+        TextView ta = (TextView) findViewById(R.id.textViewa);
+        TextView tt = (TextView) findViewById(R.id.textViewt);
+        TextView tv = (TextView) findViewById(R.id.textViewv);
+        AccelerationX.setText("My x value is :" + x);
+        AccelerationY.setText("My y value is :" + y);
+        AccelerationZ.setText("My z value is :" + z);
+        //float accelationSquareRoot = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+        double RealAcceleration = Math.sqrt(x * x + y * y + z * z) - PrevAcceleration;
+        PrevAcceleration = Math.sqrt(x * x + y * y + z * z);
+        ActualTime = (System.currentTimeMillis() - PrevTime) + ActualTime;
+        PrevTime = System.currentTimeMillis();
+        ta.setText("My Real Acceleration value is :" + RealAcceleration);
+        tt.setText("My t value is :" + (ActualTime/1000));
+        CurrentVelocity = (long) (CurrentVelocity+(RealAcceleration *(ActualTime - PrevActualTime)/1000.0));
+        tv.setText("My v value is :\n" + CurrentVelocity);
+        /*if (accelationSquareRoot >= 2) //
         {
           if (actualTime - lastUpdate < 200) {
             return;
@@ -82,7 +96,7 @@ public class MainActivity extends Activity implements SensorEventListener{
             view.setBackgroundColor(Color.RED);
           }
           color = !color;
-        }
+        }*/
       }
     
     @Override
