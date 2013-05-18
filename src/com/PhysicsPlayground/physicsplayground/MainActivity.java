@@ -70,7 +70,7 @@ public class MainActivity extends Activity implements SensorEventListener{
         TextView tt = (TextView) findViewById(R.id.textViewt);
         TextView tv = (TextView) findViewById(R.id.textViewv);
         AccelerationX.setText("My x value is MICHAEL WUZ HERE:" + x);
-        AccelerationY.setText("My y value is :" + y);
+        AccelerationY.setText("My y value is Mouhand was not here:" + y);
         AccelerationZ.setText("My z value is :" + z);
         //float accelationSquareRoot = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
         double RealAcceleration = Math.sqrt(x * x + y * y + z * z) - PrevAcceleration;
